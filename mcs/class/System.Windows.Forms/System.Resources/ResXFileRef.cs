@@ -82,11 +82,7 @@ namespace System.Resources {
 					}
 				}
 
-				string filename = parts [0];
-				if (Path.DirectorySeparatorChar == '/')
-					filename = filename.Replace ("\\", "/");
-
-				using (FileStream file = new FileStream (filename, FileMode.Open, FileAccess.Read, FileShare.Read)) {
+				using (FileStream file = new FileStream (parts [0], FileMode.Open, FileAccess.Read, FileShare.Read)) {
 					buffer = new byte [file.Length];
 					file.Read(buffer, 0, (int) file.Length);
 				}
@@ -94,7 +90,7 @@ namespace System.Resources {
 				if (type == typeof(System.Byte[]))
 					return buffer;
 
-				if (type == typeof (Bitmap) && Path.GetExtension (filename) == ".ico") {
+				if (type == typeof (Bitmap) && Path.GetExtension (parts [0]) == ".ico") {
 					MemoryStream ms = new MemoryStream (buffer);
 					return new Icon (ms).ToBitmap ();
 				}
